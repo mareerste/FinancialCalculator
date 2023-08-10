@@ -1,4 +1,6 @@
 using FinancialCalculatorWebAPI.DAContext;
+using FinancialCalculatorWebAPI.Repository;
+using FinancialCalculatorWebAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 
 // Connecting DBContext to SQL Server
 builder.Services.AddDbContext<FinancialDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnString")));
