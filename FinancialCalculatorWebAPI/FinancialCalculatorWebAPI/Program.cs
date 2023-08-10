@@ -13,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+builder.Services.AddScoped<IExpenseCategoryRepository, ExpenseCategoryRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Connecting DBContext to SQL Server
 builder.Services.AddDbContext<FinancialDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnString")));
