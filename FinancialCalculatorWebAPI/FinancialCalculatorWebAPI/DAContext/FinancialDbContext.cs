@@ -13,6 +13,7 @@ namespace FinancialCalculatorWebAPI.DAContext
         public DbSet<User> Users { get; set; }
         public DbSet<Category> ExpenseCategories { get; set; }
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

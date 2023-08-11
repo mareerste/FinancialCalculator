@@ -13,6 +13,11 @@ namespace FinancialCalculatorWebAPI.Repository
             _context = context;
         }
 
+        public async Task<IEnumerable<Expense>> GetByUser(Guid userId)
+        {
+            return _context.Expenses.Where(e => e.UserId == userId && e.IsDeleted == false).Include(e => e.Category);
+        }
+
         public async Task<IEnumerable<Expense>> GetExpensesInMonth(int year, int month, Guid userId)
         {
             DateTime startDate = new DateTime(year, month, 1);
@@ -22,7 +27,7 @@ namespace FinancialCalculatorWebAPI.Repository
                 .Where(expense => expense.DateTime >= startDate 
                 && expense.DateTime < endDate 
                 && expense.UserId == userId
-                && expense.IsDeleted == false);
+                && expense.IsDeleted == false).Include(e => e.Category);
         }
     }
 }

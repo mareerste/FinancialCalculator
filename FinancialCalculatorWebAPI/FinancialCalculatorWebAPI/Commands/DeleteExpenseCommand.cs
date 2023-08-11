@@ -1,5 +1,6 @@
 ﻿using FinancialCalculatorWebAPI.Exceptions;
 using FinancialCalculatorWebAPI.Model;
+using FinancialCalculatorWebAPI.Repository;
 using FinancialCalculatorWebAPI.Repository.Interfaces;
 using MediatR;
 
@@ -9,9 +10,11 @@ namespace FinancialCalculatorWebAPI.Commands
     public class DeleteExpenseCommandHandler : IRequestHandler<DeleteExpenseCommand, Unit>
     {
         private readonly IExpenseRepository _expenseRepository;
-        public DeleteExpenseCommandHandler(IExpenseRepository expenseRepository)
+        private readonly IUserRepository _userRepository;
+        public DeleteExpenseCommandHandler(IExpenseRepository expenseRepository, IUserRepository userRepository)
         {
             _expenseRepository = expenseRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<Unit> Handle(DeleteExpenseCommand request, CancellationToken cancellationToken)
@@ -22,6 +25,16 @@ namespace FinancialCalculatorWebAPI.Commands
             {
                 expense.IsDeleted = !expense.IsDeleted;
                 await _expenseRepository.Update(expense);
+
+                var user = await _userRepository.GetById(expense.UserId);
+
+                if (expense.IsDeleted)
+                    user.CurrentBalance += expense.Value;
+                    
+                else
+                    user.CurrentBalance -= expense.Value;
+
+                await _userRepository.Update(user);
                 return Unit.Value;
             }
             throw new ExpenseNotFoundException("Expense not found.");

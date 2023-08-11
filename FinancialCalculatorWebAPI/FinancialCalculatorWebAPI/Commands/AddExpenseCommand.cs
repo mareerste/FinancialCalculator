@@ -44,7 +44,13 @@ namespace FinancialCalculatorWebAPI.Commands
                         Value = request.Value,
                         IsDeleted = false,
                     };
-                    return await _expenseRepository.Insert(expense);
+                    var res = await _expenseRepository.Insert(expense);
+                    if (res != null)
+                    {
+                        user.CurrentBalance -= res.Value;
+                        await _userRepository.Update(user);
+                    }
+                    return res;
                 }
                 throw new CategoryNotFoundException("Provided category doesn't exist");
             }

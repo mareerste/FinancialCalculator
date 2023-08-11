@@ -32,11 +32,20 @@ namespace FinancialCalculatorWebAPI.Commands
             {
                 if (request.CategoryId != expense.CategoryId)
                     expense.Category = await _expenseCategoryRepository.GetById(request.CategoryId);
+                var oldValue = expense.Value;
                 expense.DateTime = request.DateTime;
                 expense.Description = request.Description;
                 expense.Value = request.Value;
 
-                return await _expenseRepository.Update(expense);
+                var res = await _expenseRepository.Update(expense);
+                if(res.Value != oldValue)
+                {
+                    //1000 => 400 (600) -> 300 (700)
+                    var user = await _userRepository.GetById(expense.UserId);
+                    user.CurrentBalance -= res.Value - oldValue;
+                    await _userRepository.Update(user);
+                }
+                return res;
             }
             throw new ExpenseNotFoundException("Expense not found.");
         }
