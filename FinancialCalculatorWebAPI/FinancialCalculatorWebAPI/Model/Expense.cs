@@ -12,10 +12,10 @@ namespace FinancialCalculatorWebAPI.Model
         public string Description { get; set; }
         public Guid CategoryId { get; set; }
         [Required]
-        public ExpenseCategory Category { get; set; }
+        public Category Category { get; set; }
         [Required]
         public double Value { get; set; }
-        public bool Deleted { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
         public Guid UserId { get; set; }
         public User User { get; set; }
     }

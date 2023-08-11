@@ -15,8 +15,7 @@ namespace FinancialCalculatorWebAPI.Queries
 
         public async Task<List<Expense>> Handle(GetAllExpensesQuery request, CancellationToken cancellationToken)
         {
-            var res = await _expenseRepository.GetAll();
-            return res.ToList();
+            return _expenseRepository.GetAll().Result.ToList();
         }
     }
 }

@@ -18,5 +18,6 @@ namespace FinancialCalculatorWebAPI.Model
         [Required]
         public string Mail { get; set; }
         public double CurrentBalance { get; set; } = 0.0d;
+        public bool IsDeleted { get; set; } = false;
     }
 }

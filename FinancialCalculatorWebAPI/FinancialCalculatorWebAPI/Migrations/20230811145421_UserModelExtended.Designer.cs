@@ -4,6 +4,7 @@ using FinancialCalculatorWebAPI.DAContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialCalculatorWebAPI.Migrations
 {
     [DbContext(typeof(FinancialDbContext))]
-    partial class FinancialDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230811145421_UserModelExtended")]
+    partial class UserModelExtended
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,12 +70,9 @@ namespace FinancialCalculatorWebAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CategodyId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("ExpenseCategories");
                 });
@@ -109,9 +109,6 @@ namespace FinancialCalculatorWebAPI.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("UserId");
-
-                    b.HasIndex("Username")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });

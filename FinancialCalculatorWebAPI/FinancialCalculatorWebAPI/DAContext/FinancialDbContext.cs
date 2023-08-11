@@ -11,7 +11,7 @@ namespace FinancialCalculatorWebAPI.DAContext
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
+        public DbSet<Category> ExpenseCategories { get; set; }
         public DbSet<Expense> Expenses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,6 +25,12 @@ namespace FinancialCalculatorWebAPI.DAContext
                 .HasOne(e => e.Category)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Category>()
+                .HasIndex(e => e.Name).IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Username).IsUnique();
         }
     }
 }

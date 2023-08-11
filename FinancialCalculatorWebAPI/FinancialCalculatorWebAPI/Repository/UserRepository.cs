@@ -11,5 +11,10 @@ namespace FinancialCalculatorWebAPI.Repository
         {
             _context = context;
         }
+
+        public async Task<User> GetByUsername(string username)
+        {
+            return _context.Users.FirstOrDefault(u => u.Username.Equals(username));
+        }
     }
 }

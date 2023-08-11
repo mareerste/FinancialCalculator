@@ -2,7 +2,7 @@
 
 namespace FinancialCalculatorWebAPI.Repository.Interfaces
 {
-    public interface IExpenseCategoryRepository : IGenericRepository<ExpenseCategory>
+    public interface ICategoryRepository : IGenericRepository<Category>
     {
     }
 }

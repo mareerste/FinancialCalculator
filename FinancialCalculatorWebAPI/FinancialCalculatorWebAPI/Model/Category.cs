@@ -2,13 +2,14 @@
 
 namespace FinancialCalculatorWebAPI.Model
 {
-    public class ExpenseCategory
+    public class Category
     {
         [Key]
         public Guid CategodyId { get; set; }
         [Required]
+        
         public string Name { get; set; }
         [Required]
-        public bool Deleted { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
     }
 }

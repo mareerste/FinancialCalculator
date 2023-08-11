@@ -4,10 +4,10 @@ using FinancialCalculatorWebAPI.Repository.Interfaces;
 
 namespace FinancialCalculatorWebAPI.Repository
 {
-    public class ExpenseCategoryRepository : GenericRepository<ExpenseCategory>, IExpenseCategoryRepository
+    public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
         private readonly FinancialDbContext _context;
-        public ExpenseCategoryRepository(FinancialDbContext context) : base(context)
+        public CategoryRepository(FinancialDbContext context) : base(context)
         {
             _context = context;
         }
