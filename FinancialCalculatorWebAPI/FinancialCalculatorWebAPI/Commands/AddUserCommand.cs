@@ -11,7 +11,7 @@ namespace FinancialCalculatorWebAPI.Commands
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        public DateTime? BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
         public string Mail { get; set; }
     }
     public class AddUserCommandHandler : IRequestHandler<AddUserCommand, User>
@@ -42,10 +42,10 @@ namespace FinancialCalculatorWebAPI.Commands
         }
         public async Task<bool> IsValid (User user, string pw)
         {
-            if (!string.IsNullOrEmpty(user.Username) || 
-                !string.IsNullOrEmpty(pw) || 
-                string.IsNullOrEmpty(user.Mail) || 
-                user.BirthDate >= DateTime.Now)
+            if (!string.IsNullOrEmpty(user.Username) && 
+                !string.IsNullOrEmpty(pw) && 
+                !string.IsNullOrEmpty(user.Mail) && 
+                user.BirthDate < DateTime.Now)
             {
                 var userExist = await _userRepository.GetByUsername(user.Username);
                 if (userExist != null)
@@ -54,10 +54,10 @@ namespace FinancialCalculatorWebAPI.Commands
                         throw new WrongCredentialsException("User's account has been deleted.");
                     throw new WrongCredentialsException("User account with same username already exist.");
                 }
-                return false;
+                return true;
             }
                 
-            return true;
+            return false;
         }
     }
 }

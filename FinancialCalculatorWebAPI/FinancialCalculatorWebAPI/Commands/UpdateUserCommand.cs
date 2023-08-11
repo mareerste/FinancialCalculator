@@ -8,9 +8,7 @@ namespace FinancialCalculatorWebAPI.Commands
     public record UpdateUserCommand : IRequest<User>
     {
         public Guid UserId { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public DateTime? BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
         public string Mail { get; set; }
         public double CurrentBalance { get; set; }
     }

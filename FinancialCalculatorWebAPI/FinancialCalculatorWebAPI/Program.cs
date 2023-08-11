@@ -1,3 +1,4 @@
+using FinancialCalculatorWebAPI.Commands;
 using FinancialCalculatorWebAPI.DAContext;
 using FinancialCalculatorWebAPI.Repository;
 using FinancialCalculatorWebAPI.Repository.Interfaces;
@@ -5,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add MediatR for commands and queries
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(AddUserCommand).Assembly));
 
+// Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

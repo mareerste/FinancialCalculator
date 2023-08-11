@@ -14,7 +14,7 @@ namespace FinancialCalculatorWebAPI.Model
         public string Password { get; set; }
         [Required]
         public ERole Role { get; set; } = ERole.User;
-        public DateTime? BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
         [Required]
         public string Mail { get; set; }
         public double CurrentBalance { get; set; } = 0.0d;

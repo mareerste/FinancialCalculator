@@ -11,8 +11,7 @@ namespace FinancialCalculatorWebAPI.Commands
         public DateTime DateTime { get; set; }
         public string Description { get; set; }
         public Guid CategoryId { get; set; }
-        public double Value { get; set; }
-        
+        public double Value { get; set; }        
         public string Username { get; set; }
     }
     public class AddExpenseCommandHandler : IRequestHandler<AddExpenseCommand, Expense>

@@ -9,7 +9,6 @@ namespace FinancialCalculatorWebAPI.Commands
     public record AddCategoryCommand : IRequest<Category>
     {
         public string Name { get; set; }
-        //public bool IsDeleted { get; set; } = false;
     }
     public class AddCategoryCommandHandler : IRequestHandler<AddCategoryCommand, Category>
     {

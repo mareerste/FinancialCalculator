@@ -7,12 +7,11 @@ namespace FinancialCalculatorWebAPI.Commands
 {
     public record UpdateExpenseCommand : IRequest<Expense>
     {
-        public int ExpenseId { get; set; }
+        public Guid ExpenseId { get; set; }
         public DateTime DateTime { get; set; }
         public string Description { get; set; }
         public Guid CategoryId { get; set; }
-        public double Value { get; set; }
-        public string Username { get; set; }
+        public double Value { get; set; }        
     }
     public class UpdateExpenseCommandHandler : IRequestHandler<UpdateExpenseCommand, Expense>
     {
