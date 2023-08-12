@@ -3,10 +3,12 @@ using FinancialCalculatorWebAPI.Model;
 using FinancialCalculatorWebAPI.Model.DTO;
 using FinancialCalculatorWebAPI.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialCalculatorWebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -29,6 +31,7 @@ namespace FinancialCalculatorWebAPI.Controllers
             return Ok(await _mediator.Send(new GetAllUndeletedCategoriesQuery()));
         }
 
+        [Authorize(Roles = "Moderator")]
         [HttpPost]
         public async Task<ActionResult<Category>> AddCategory(AddCategoryDTO categoryDTO)
         {
@@ -42,6 +45,7 @@ namespace FinancialCalculatorWebAPI.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Moderator")]
         [HttpPut]
         public async Task<ActionResult<Category>> UpdateCategory(Category category)
         {
@@ -56,6 +60,7 @@ namespace FinancialCalculatorWebAPI.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Moderator")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteCategory(Guid id)
         {

@@ -3,11 +3,13 @@ using FinancialCalculatorWebAPI.Model;
 using FinancialCalculatorWebAPI.Model.DTO;
 using FinancialCalculatorWebAPI.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialCalculatorWebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ExpenseController : ControllerBase

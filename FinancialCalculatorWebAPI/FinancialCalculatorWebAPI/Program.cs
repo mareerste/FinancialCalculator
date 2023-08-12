@@ -3,11 +3,38 @@ using FinancialCalculatorWebAPI.DAContext;
 using FinancialCalculatorWebAPI.Repository;
 using FinancialCalculatorWebAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add MediatR for commands and queries
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(AddUserCommand).Assembly));
+
+// JWT Authentication
+builder.Services.AddAuthentication(configureOptions =>
+{
+    configureOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    configureOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    configureOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+    };
+});
+
+builder.Services.AddAuthorization();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -31,7 +58,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
