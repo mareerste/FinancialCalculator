@@ -6,6 +6,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.JsonWebTokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace FinancialCalculatorWebAPI.Controllers
 {
@@ -67,15 +71,21 @@ namespace FinancialCalculatorWebAPI.Controllers
                 return Ok(retVal);
             return BadRequest();
         }
-        //TODO: Extract username from JWT
         [HttpPut("password")]
         public async Task<ActionResult<User>> UpdatePassword(ChangeUsersPasswordDTO passwordDTO)
         {
+
+            string jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var username = _mediator.Send(new GetMyUsernameQuery(jwtToken)).Result;
+
+            if (username == null)
+                return BadRequest();
+                
             var updateUserPasswordCommand = new UpdateUserPasswordCommand
             {
                 OldPassword = passwordDTO.OldPassword,
                 NewPassword = passwordDTO.NewPassword,
-                Username = "marko123"
+                Username = username,
             };
             var user = await _mediator.Send(updateUserPasswordCommand);
             if(user != null)

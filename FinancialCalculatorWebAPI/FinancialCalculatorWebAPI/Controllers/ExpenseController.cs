@@ -20,17 +20,26 @@ namespace FinancialCalculatorWebAPI.Controllers
             _mediator = mediator;
         }
 
-        //TODO: Extract username from JWT, it should not be sent throught URL (or add constraint)
         [HttpGet("{username}")]
         public async Task<ActionResult<List<Expense>>> GetAllByUser(string username)
         {
+            string jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var usernameJwt = _mediator.Send(new GetMyUsernameQuery(jwtToken)).Result;
+
+            if (!username.Equals(usernameJwt))
+                return Unauthorized();
             return Ok(await _mediator.Send(new GetAllExpensesByUserQuery(username)));
         }
-        //TODO: Extract username from JWT
         [HttpGet("{year:int}/{month:int}")]
         public async Task<ActionResult<List<Expense>>> GetExpensesInMonth(int year, int month)
         {
-            var GetAllExpensesInMonthQuery = new GetAllExpensesInMonthQuery(year, month, "marko123");
+            string jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var username = _mediator.Send(new GetMyUsernameQuery(jwtToken)).Result;
+
+            if (username == null)
+                return Unauthorized();
+
+            var GetAllExpensesInMonthQuery = new GetAllExpensesInMonthQuery(year, month, username);
 
             var res = await _mediator.Send(GetAllExpensesInMonthQuery);
             if(res != null)
@@ -38,10 +47,15 @@ namespace FinancialCalculatorWebAPI.Controllers
             return BadRequest();
         }
 
-        //TODO: Extract username from JWT
         [HttpPost]
         public async Task<ActionResult<Expense>> AddExpense (AddExpenseDTO expenseDTO)
         {
+            string jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var username = _mediator.Send(new GetMyUsernameQuery(jwtToken)).Result;
+
+            if (!username.Equals(expenseDTO.Username))
+                return Unauthorized();
+
             var AddExpenseCommand = new AddExpenseCommand
             {
                 Description = expenseDTO.Description,

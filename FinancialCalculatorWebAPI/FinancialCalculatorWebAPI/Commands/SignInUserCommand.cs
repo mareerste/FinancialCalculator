@@ -37,7 +37,7 @@ namespace FinancialCalculatorWebAPI.Commands
                     // return JWT
                     var authClaims = new List<Claim>
                     {
-                        new(JwtRegisteredClaimNames.Sub, user.Username),
+                        new("username", user.Username),
                         new("role", user.Role.ToString()),
                     };
                     var token = GenerateToken(authClaims);
