@@ -3,12 +3,17 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavLayout from "./Components/NavLayout.tsx";
 import LoginPage from "./Pages/LoginPage.tsx";
+import RequireAuth from "./Components/Context/RequireAuth.tsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<NavLayout />}></Route>
+        <Route element={<RequireAuth />}>
+          <Route path="*" element={<NavLayout />}></Route>
+          <Route path="/" element={<NavLayout />}></Route>
+          <Route path="/Home" element={<NavLayout />}></Route>
+        </Route>
         <Route path="/login" element={<LoginPage></LoginPage>}></Route>
       </Routes>
     </BrowserRouter>

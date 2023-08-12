@@ -4,7 +4,10 @@ import { userComponents, moderatorComponents } from "../Data/data.ts";
 import { useNavigate } from "react-router-dom";
 
 const NavLayout = ({ body }) => {
-  const logOut = () => console.log("log out");
+  const logOut = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  };
   const navigate = useNavigate();
   return (
     <>
@@ -56,14 +59,6 @@ const NavLayout = ({ body }) => {
               </a>
             </li>
           </ul>
-          {/* <a
-            className="nav-item nav-link"
-            role="button"
-            style={{ marginLeft: "auto", marginRight: "5%", fontSize: "30px" }}
-            onClick={logOut}
-          >
-            Sign Out
-          </a> */}
         </div>
       </nav>
       <div className="background bg-body-color h-max">{body}</div>

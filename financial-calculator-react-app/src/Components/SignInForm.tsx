@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { postCredentials } from "../Services/AuthService.ts";
 
 const SignInForm = () => {
@@ -11,6 +11,8 @@ const SignInForm = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const onSubmit = () => {
     const dto = {
@@ -20,7 +22,10 @@ const SignInForm = () => {
 
     postCredentials(dto)
       .then((res) => {
-        console.log(res);
+        sessionStorage.setItem("JWT", res.token);
+        sessionStorage.setItem("role", res.role);
+        sessionStorage.setItem("username", res.username);
+        navigate(from, { replace: true });
       })
       .catch((err) => console.log(err));
   };
