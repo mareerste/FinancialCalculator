@@ -2,6 +2,17 @@ import { NavComponent } from "./interface.ts";
 
 export const base_url = "http://localhost:3000";
 export const backend_url = "http://localhost:5162/api/";
+export const storageKey = "JWT";
+export const username = "username";
+
+export const filterMenu = [
+  "Date asc",
+  "Date desc",
+  "Category asc",
+  "Category desc",
+  "Value asc",
+  "Value desc",
+];
 
 export const userComponents: NavComponent[] = [
   {
