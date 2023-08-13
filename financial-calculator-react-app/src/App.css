@@ -57,3 +57,10 @@
   border: 2px solid rgb(255,193,7);
   border-radius: 5%;
 }
+
+.date-filter-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}

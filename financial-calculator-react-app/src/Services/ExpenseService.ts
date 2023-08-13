@@ -35,3 +35,23 @@ export function GetExpenseByUser() {
       return err;
     });
 }
+
+//http://localhost:5162/api/expense/range/2023-07-01/2023-07-31
+export function GetExpenseByUserInDateRange(
+  startDate: string,
+  endDate: string
+) {
+  return axios
+    .get(url + "range/" + startDate + "/" + endDate, {
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem(storageKey),
+      },
+    })
+    .then((res) => {
+      return res?.data;
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+}

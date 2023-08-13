@@ -4,9 +4,10 @@ import { Expense } from "../Data/interface.ts";
 import {
   GetExpenseInMonth,
   GetExpenseByUser,
+  GetExpenseByUserInDateRange,
 } from "../Services/ExpenseService.ts";
 import ExpensesTable from "./ExpensesTable.tsx";
-import FilterDropDownButton from "./FilterDropDownButton.tsx";
+import FilterDropDownButton from "./FilterTableComponent.tsx";
 import MonthHandler from "./MonthHandler.tsx";
 import TotalValueSection from "./TotalValueSection.tsx";
 
@@ -14,36 +15,60 @@ const ExpensesContent = ({ title, message }) => {
   const [expenses, setExpenses] = useState<Expense>([]);
   const [date, setDate] = useState(new Date());
   const [totalValue, setTotalValue] = useState(0);
-  const [allExpenses, setAllExpenses] = useState(false);
+  const [getAllExpenses, setGetAllExpenses] = useState(false);
+  const [getExpensesByDate, setGetExpensesByDate] = useState(false);
+  const [dates, setDates] = useState<Array<string>>([]);
 
   const changeDate = (newDate: Date) => {
     setDate(new Date(newDate));
   };
 
   useEffect(() => {
-    console.log("promena allExpenses:", allExpenses);
-    if (allExpenses) {
-      GetExpenseByUser()
-        .then((res) => {
-          setExpenses(res);
-          setTotalValue(getTotalValue(res));
-        })
-        .catch((err) => console.log(err));
+    if (getAllExpenses) {
+      getAllExpensesByUser();
+    } else if (getExpensesByDate) {
+      getExpensesByDateRange(dates[0], dates[1]);
     } else {
-      GetExpenseInMonth(date)
-        .then((res) => {
-          setExpenses(res);
-          setTotalValue(getTotalValue(res));
-        })
-        .catch((err) => console.log(err));
+      getByMonth();
     }
-  }, [date, allExpenses]);
+  }, [date, getAllExpenses, dates]);
 
   const getTotalValue = (expenses: Expense[]) => {
     return expenses.reduce(
       (accumulator, expense) => accumulator + expense.value,
       0
     );
+  };
+
+  const getAllExpensesByUser = () => {
+    GetExpenseByUser()
+      .then((res) => {
+        setExpenses(res);
+        setTotalValue(getTotalValue(res));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getExpensesByDateRange = (start: string, end: string) => {
+    GetExpenseByUserInDateRange(start, end)
+      .then((res) => {
+        setExpenses(res);
+        setTotalValue(getTotalValue(res));
+        setGetExpensesByDate(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setGetExpensesByDate(false);
+      });
+  };
+
+  const getByMonth = () => {
+    GetExpenseInMonth(date)
+      .then((res) => {
+        setExpenses(res);
+        setTotalValue(getTotalValue(res));
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleFitler = (item: string) => {
@@ -120,6 +145,12 @@ const ExpensesContent = ({ title, message }) => {
     setExpenses([...expenses].sort((a, b) => b.value - a.value));
   };
 
+  const handleFitlerDates = (start, end) => {
+    setGetAllExpenses(false);
+    setDates([start, end]);
+    setGetExpensesByDate(true);
+  };
+
   return (
     <>
       <br />
@@ -135,18 +166,19 @@ const ExpensesContent = ({ title, message }) => {
           <small className="text-muted">{message}</small>
         </h2>
         <hr />
-        {!allExpenses && (
+        {!getAllExpenses && (
           <MonthHandler
             currentDate={date}
             changeDate={changeDate}
           ></MonthHandler>
         )}
+        <FilterDropDownButton
+          onSelectFilter={handleFitler}
+          onSwitchButton={(value) => setGetAllExpenses(value)}
+          onDateFilter={(start, end) => handleFitlerDates(start, end)}
+        ></FilterDropDownButton>
         {expenses.length > 0 && (
           <>
-            <FilterDropDownButton
-              onSelectFilter={handleFitler}
-              onSwitchButton={(value) => setAllExpenses(value)}
-            ></FilterDropDownButton>
             <ExpensesTable expenses={expenses}></ExpensesTable>
             <TotalValueSection value={totalValue}></TotalValueSection>
           </>
