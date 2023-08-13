@@ -42,10 +42,24 @@ namespace FinancialCalculatorWebAPI.Controllers
             var GetAllExpensesInMonthQuery = new GetAllExpensesInMonthQuery(year, month, username);
 
             var res = await _mediator.Send(GetAllExpensesInMonthQuery);
-            if(res != null)
+            if (res != null)
                 return Ok(res);
             return BadRequest();
         }
+        [HttpGet("range/{startDate}/{endDate}")]
+        public async Task<ActionResult<List<Expense>>> GetExpensesByDateRange (DateTime startDate, DateTime endDate){
+            string jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var username = _mediator.Send(new GetMyUsernameQuery(jwtToken)).Result;
+
+            if (username == null)
+                return Unauthorized();
+
+            var res = await _mediator.Send(new GetExpensesByUserInDateRangeQuery(startDate, endDate, username));
+            if (res != null)
+                return Ok(res);
+            return BadRequest();
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<Expense>> AddExpense (AddExpenseDTO expenseDTO)

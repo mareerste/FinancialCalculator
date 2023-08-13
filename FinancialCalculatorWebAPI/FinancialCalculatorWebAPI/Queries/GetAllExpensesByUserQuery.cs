@@ -19,7 +19,6 @@ namespace FinancialCalculatorWebAPI.Queries
         {
             var user = await _userRepository.GetByUsername(request.username);
             if (user is not null)
-                //return _expenseRepository.GetBy(e => e.UserId == user.UserId && e.IsDeleted == false).Result.ToList();
                 return _expenseRepository.GetByUser(user.UserId).Result.ToList();
             throw new UserNotFoundException("User not found.");
         }

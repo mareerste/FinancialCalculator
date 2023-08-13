@@ -15,7 +15,7 @@ namespace FinancialCalculatorWebAPI.Repository
 
         public async Task<IEnumerable<Expense>> GetByUser(Guid userId)
         {
-            return _context.Expenses.Where(e => e.UserId == userId && e.IsDeleted == false).Include(e => e.Category);
+            return _context.Expenses.Where(e => e.UserId == userId && e.IsDeleted == false).Include(e => e.Category).OrderBy(e => e.DateTime);
         }
 
         public async Task<IEnumerable<Expense>> GetExpensesInMonth(int year, int month, Guid userId)
@@ -27,7 +27,22 @@ namespace FinancialCalculatorWebAPI.Repository
                 .Where(expense => expense.DateTime >= startDate 
                 && expense.DateTime < endDate 
                 && expense.UserId == userId
-                && expense.IsDeleted == false).Include(e => e.Category);
+                && expense.IsDeleted == false).Include(e => e.Category)
+                .OrderBy(e => e.DateTime);
+        }
+
+        public async Task<IEnumerable<Expense>> GetExpensesInRange(DateTime start, DateTime end, Guid userId)
+        {
+            end = end.AddDays(1);
+
+            return await _context.Expenses
+                .Where(expense => expense.DateTime >= start
+                    && expense.DateTime < end
+                    && expense.UserId == userId
+                    && !expense.IsDeleted)
+                .Include(e => e.Category)
+                .OrderBy(e => e.DateTime)
+                .ToListAsync();
         }
     }
 }
