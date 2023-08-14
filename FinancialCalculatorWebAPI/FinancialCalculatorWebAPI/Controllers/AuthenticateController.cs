@@ -1,5 +1,6 @@
 ﻿using FinancialCalculatorWebAPI.Commands;
 using FinancialCalculatorWebAPI.Model.DTO;
+using FinancialCalculatorWebAPI.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,21 @@ namespace FinancialCalculatorWebAPI.Controllers
             if (token != null)
                 return Ok(token);
             return Unauthorized();
+        }
+
+        [HttpGet("whoami")]
+        public async Task<ActionResult> WhoAmI()
+        {
+            string jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var username = _mediator.Send(new GetMyUsernameQuery(jwtToken)).Result;
+
+            if (username == null)
+                return Unauthorized();
+
+            var user = await _mediator.Send(new GetLoggedUserQuery(username));
+            if (user == null)
+                return BadRequest();
+            return Ok(user);
         }
     }
 }

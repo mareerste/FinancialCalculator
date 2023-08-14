@@ -1,14 +1,19 @@
 import React from "react";
 
-const DeleteButtonForm = ({ entityId, onSubmitFunction }) => {
+const DeleteButtonForm = ({ entityId, value, onSubmitFunction }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmitFunction(entityId);
+    onSubmitFunction(entityId, value);
   };
   return (
     <form onSubmit={handleSubmit}>
-      <input hidden value={entityId}></input>
-      <button type="submit" className="btn btn-outline-warning text-dark">
+      <input hidden defaultValue={entityId}></input>
+      <input hidden defaultValue={value}></input>
+      <button
+        type="submit"
+        className="btn btn-outline-warning text-dark"
+        style={{ marginRight: "1vh" }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"

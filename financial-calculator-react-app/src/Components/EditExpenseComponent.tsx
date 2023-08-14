@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Expense, Category } from "../Data/interface.ts";
-import { username } from "../Data/data.ts";
 import { GetUndeletedCategories } from "../Services/CategoryService.ts";
-import { AddExpense } from "../Services/ExpenseService.ts";
+import { UpdateExpense } from "../Services/ExpenseService.ts";
 
-const AddExpenseComponent = ({ onSubmitExpense }) => {
+const EditExpenseComponent = ({ expense, onSubmitUpdate }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -28,7 +28,9 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
   } = useForm();
 
   const onSubmit = () => {
+    console.log(expense);
     const expenseDto: Expense = {
+      ExpenseId: expense.expenseId,
       DateTime:
         getValues("dateTime") === ""
           ? new Date().toISOString()
@@ -36,12 +38,11 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
       Description: getValues("description"),
       CategoryId: getValues("categoryId"),
       Value: Number(getValues("value")),
-      Username: sessionStorage.getItem(username),
     };
     if (isExpenseValid(expenseDto)) {
-      AddExpense(expenseDto)
+      UpdateExpense(expenseDto)
         .then((res) => {
-          onSubmitExpense(res);
+          onSubmitUpdate(res);
           handleClose();
         })
         .catch((err) => console.log(err));
@@ -57,20 +58,25 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
 
   return (
     <>
-      <Button variant="warning" onClick={handleShow}>
+      <Button
+        variant="warning-outline"
+        onClick={handleShow}
+        className={"btn btn-outline-warning text-dark"}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="2vh"
-          height="2vh"
-          style={{ marginRight: "1vh" }}
+          width="16"
+          height="16"
           fill="currentColor"
-          className="bi bi-plus-square"
+          className="bi bi-pencil-square"
           viewBox="0 0 16 16"
         >
-          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
-          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+          <path
+            fillRule="evenodd"
+            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+          ></path>
         </svg>
-        Add
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -82,6 +88,7 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
             <Form.Group controlId="dateTime">
               <Form.Label className="fs-4 mb-2">Pick a date:</Form.Label>
               <Form.Control
+                defaultValue={expense.dateTime}
                 type="datetime-local"
                 className="form-control mb-4 border-primary-subtle"
                 {...register("dateTime")}
@@ -104,6 +111,7 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
               )}
               <Form.Label className="fs-4 mb-2">Description:</Form.Label>
               <Form.Control
+                defaultValue={expense.description}
                 type="text"
                 className="form-control mb-4 border-primary-subtle"
                 {...register("description", { required: true })}
@@ -126,6 +134,7 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
               )}
               <Form.Label className="fs-4 mb-2">Category:</Form.Label>
               <Form.Select
+                defaultValue={expense.categoryId}
                 className="form-control mb-4 border-primary-subtle"
                 {...register("categoryId", { required: true })}
               >
@@ -159,6 +168,7 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
               )}
               <Form.Label className="fs-4 mb-2">Value:</Form.Label>
               <Form.Control
+                defaultValue={expense.value}
                 type="number"
                 className="form-control mb-4 border-primary-subtle"
                 {...register("value", { required: true, min: 0 })}
@@ -172,7 +182,7 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
             type="submit"
             onClick={handleSubmit(onSubmit)}
           >
-            Add
+            Edit
           </Button>
           <Button variant="danger" onClick={handleClose}>
             Close
@@ -183,4 +193,4 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
   );
 };
 
-export default AddExpenseComponent;
+export default EditExpenseComponent;

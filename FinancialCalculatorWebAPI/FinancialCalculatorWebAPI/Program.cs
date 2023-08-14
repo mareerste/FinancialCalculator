@@ -47,6 +47,8 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddCors(o =>
 {
     o.AddDefaultPolicy(builder =>

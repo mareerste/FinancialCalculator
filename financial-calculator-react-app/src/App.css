@@ -64,3 +64,8 @@
   align-items: center;
   gap: 16px;
 }
+
+.custom-disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { filterMenu } from "../Data/data.ts";
 import { Expense } from "../Data/interface.ts";
+import { DeleteExpense } from "../Services/ExpenseService.ts";
 import {
   GetExpenseInMonth,
   GetExpenseByUser,
@@ -11,7 +12,7 @@ import FilterDropDownButton from "./FilterTableComponent.tsx";
 import MonthHandler from "./MonthHandler.tsx";
 import TotalValueSection from "./TotalValueSection.tsx";
 
-const ExpensesContent = ({ title, message }) => {
+const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
   const [expenses, setExpenses] = useState<Expense>([]);
   const [date, setDate] = useState(new Date());
   const [totalValue, setTotalValue] = useState(0);
@@ -155,14 +156,52 @@ const ExpensesContent = ({ title, message }) => {
     var newList = [...expenses, newExpense];
     setExpenses(newList);
     setTotalValue(getTotalValue(newList));
+
+    changeUser({
+      ...loggedUser,
+      currentBalance: loggedUser.currentBalance - newExpense.value,
+    });
   };
 
-  const handleDeleteEntity = (expenseId: string) => {
-    const updatedExpenses = expenses.filter(
-      (expense) => expense.expenseId !== expenseId
+  const handleDeleteEntity = (expenseId: string, expenseValue) => {
+    DeleteExpense(expenseId)
+      .then((res) => {
+        if (res === 200) {
+          const updatedExpenses = expenses.filter(
+            (expense) => expense.expenseId !== expenseId
+          );
+          setExpenses(updatedExpenses);
+          setTotalValue(getTotalValue(updatedExpenses));
+          changeUser({
+            ...loggedUser,
+            currentBalance: loggedUser.currentBalance + expenseValue,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleUpdateEntity = (updatedExpense: Expense) => {
+    const index = expenses.findIndex(
+      (expense) => expense.expenseId === updatedExpense.expenseId
     );
-    setExpenses(updatedExpenses);
-    setTotalValue(getTotalValue(updatedExpenses));
+
+    if (index !== -1) {
+      const updatedExpenses = [...expenses];
+
+      changeUser({
+        ...loggedUser,
+        currentBalance:
+          loggedUser.currentBalance +
+          updatedExpenses[index].value -
+          updatedExpense.value,
+      });
+
+      updatedExpenses[index] = updatedExpense;
+
+      setExpenses(updatedExpenses);
+      setTotalValue(getTotalValue(updatedExpenses));
+    }
   };
 
   return (
@@ -197,8 +236,14 @@ const ExpensesContent = ({ title, message }) => {
             <ExpensesTable
               expenses={expenses}
               handleDeleteEntity={handleDeleteEntity}
+              handleUpdateEntity={handleUpdateEntity}
             ></ExpensesTable>
-            <TotalValueSection value={totalValue}></TotalValueSection>
+            <TotalValueSection
+              text={"Total Value:"}
+              value={totalValue}
+              secondText={"Your Balance:"} //
+              secondValue={loggedUser?.currentBalance}
+            ></TotalValueSection>
           </>
         )}
       </div>

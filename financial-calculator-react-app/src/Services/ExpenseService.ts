@@ -70,3 +70,29 @@ export function AddExpense(expense: Expense) {
     })
     .catch((err) => console.log(err));
 }
+
+export function DeleteExpense(expenseId: string) {
+  return axios
+    .delete(url + expenseId, {
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem(storageKey),
+      },
+    })
+    .then((res) => {
+      return res.status;
+    })
+    .catch((err) => console.log(err));
+}
+
+export function UpdateExpense(expenseDto: Expense) {
+  return axios
+    .put(url, expenseDto, {
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem(storageKey),
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+}

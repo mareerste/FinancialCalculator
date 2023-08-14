@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../Images/logo.png";
-import { userComponents, moderatorComponents } from "../Data/data.ts";
+import { User } from "../Data/interface.ts";
+import {
+  userComponents,
+  moderatorComponents,
+  role,
+  UserRole,
+} from "../Data/data.ts";
 import { useNavigate } from "react-router-dom";
+import { WhoAmI } from "../Services/AuthService.ts";
 
 const NavLayout = ({ body }) => {
   const logOut = () => {
     sessionStorage.clear();
     navigate("/login");
   };
+
+  const [loggedUser, setLoggedUser] = useState<User>(null);
+  const [IsModerator, setIsModerator] = useState(false);
+  useEffect(() => {
+    if (sessionStorage.getItem(role) === UserRole.Moderator)
+      setIsModerator(true);
+    WhoAmI()
+      .then((res) => {
+        setLoggedUser(res);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  const changeUser = (user: User) => {
+    setLoggedUser(user);
+  };
+
   const navigate = useNavigate();
   return (
     <>
@@ -35,26 +58,43 @@ const NavLayout = ({ body }) => {
                 </li>
               );
             })}
-            {moderatorComponents.map((component) => {
-              return (
-                <li className="nav-item h3" key={component.name}>
-                  <a
-                    className="nav-link"
-                    key={component.name}
-                    onClick={() => navigate(component.url)}
-                    role="button"
-                  >
-                    {component.name}
-                  </a>
-                </li>
-              );
-            })}
+            {IsModerator &&
+              moderatorComponents.map((component) => {
+                return (
+                  <li className="nav-item h3" key={component.name}>
+                    <a
+                      className="nav-link"
+                      key={component.name}
+                      onClick={() => navigate(component.url)}
+                      role="button"
+                    >
+                      {component.name}
+                    </a>
+                  </li>
+                );
+              })}
           </ul>
+
           <ul
             className="navbar-nav mr-auto"
-            style={{ marginLeft: "auto", marginRight: "5%", fontSize: "30px" }}
+            style={{
+              marginLeft: "auto",
+              marginRight: "5%",
+              fontSize: "30px",
+              display: "flex",
+              alignItems: "center",
+            }}
           >
-            <li className="nav-item h3">
+            <li className="nav-item h3" style={{ display: "flex" }}>
+              <a
+                className="nav-link"
+                role="button"
+                onClick={() => console.log("not implemented")}
+              >
+                {loggedUser?.username}
+              </a>
+            </li>
+            <li className="nav-item h3" style={{ display: "flex" }}>
               <a className="nav-link" role="button" onClick={logOut}>
                 Sign Out
               </a>
@@ -63,7 +103,7 @@ const NavLayout = ({ body }) => {
         </div>
       </nav>
       <section className="background bg-body-color h-max flex-column justify-content-center align-items-center d-flex">
-        {body}
+        {body ? React.cloneElement(body, { loggedUser, changeUser }) : null}
       </section>
     </>
   );

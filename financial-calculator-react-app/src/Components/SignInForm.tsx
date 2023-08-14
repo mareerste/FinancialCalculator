@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
+import { storageKey, role, username } from "../Data/data.ts";
 import { postCredentials } from "../Services/AuthService.ts";
 
 const SignInForm = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -15,6 +18,7 @@ const SignInForm = () => {
   const from = location.state?.from?.pathname || "/";
 
   const onSubmit = () => {
+    setErrorMessage("");
     const dto = {
       Username: getValues("username"),
       Password: getValues("password"),
@@ -22,17 +26,33 @@ const SignInForm = () => {
 
     postCredentials(dto)
       .then((res) => {
-        sessionStorage.setItem("JWT", res.token);
-        sessionStorage.setItem("role", res.role);
-        sessionStorage.setItem("username", res.username);
+        sessionStorage.setItem(storageKey, res.data.token);
+        sessionStorage.setItem(role, res.data.role);
+        sessionStorage.setItem(username, res.data.username);
         navigate(from, { replace: true });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrorMessage("Wrong credentials.");
+      });
   };
 
   return (
     <>
       <form>
+        {errorMessage && (
+          <div
+            className="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            <p className="fs-5">{errorMessage}</p>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+        )}
         {errors.username && (
           <div
             className="alert alert-danger alert-dismissible fade show"

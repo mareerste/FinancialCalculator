@@ -4,6 +4,7 @@ export const base_url = "http://localhost:3000";
 export const backend_url = "http://localhost:5162/api/";
 export const storageKey = "JWT";
 export const username = "username";
+export const role = "role";
 
 export const filterMenu = [
   "Date asc",
@@ -39,3 +40,8 @@ export const moderatorComponents: NavComponent[] = [
     url: "/users",
   },
 ];
+
+export enum UserRole {
+  User = "User",
+  Moderator = "Moderator",
+}

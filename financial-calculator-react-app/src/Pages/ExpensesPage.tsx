@@ -1,11 +1,13 @@
 import React from "react";
 import ExpensesContent from "../Components/ExpensesContent.tsx";
 
-const ExpensesPage = () => {
+const ExpensesPage = ({ loggedUser, changeUser }) => {
   return (
     <ExpensesContent
       title={"Expense"}
       message={"Track your montly expenses"}
+      loggedUser={loggedUser}
+      changeUser={changeUser}
     ></ExpensesContent>
   );
 };

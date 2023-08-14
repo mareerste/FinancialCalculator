@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Expense } from "../Data/interface.ts";
 import { formatDateTime } from "../Helper/HelperFunction.ts";
 import DeleteButtonForm from "./DeleteButtonForm.tsx";
+import EditExpenseComponent from "./EditExpenseComponent.tsx";
 
-const ExpensesTable = ({ expenses, handleDeleteEntity }) => {
+const ExpensesTable = ({
+  expenses,
+  handleDeleteEntity,
+  handleUpdateEntity,
+}) => {
   return (
     <div className="table-wrapper-scroll-y my-custom-scrollbar">
       <table className="table table-bordered table-striped mb-0">
@@ -27,8 +32,13 @@ const ExpensesTable = ({ expenses, handleDeleteEntity }) => {
                   <td className="d-flex justify-content-center">
                     <DeleteButtonForm
                       entityId={expense.expenseId}
+                      value={expense.value}
                       onSubmitFunction={handleDeleteEntity}
                     ></DeleteButtonForm>
+                    <EditExpenseComponent
+                      expense={expense}
+                      onSubmitUpdate={handleUpdateEntity}
+                    ></EditExpenseComponent>
                   </td>
                 </tr>
               );
