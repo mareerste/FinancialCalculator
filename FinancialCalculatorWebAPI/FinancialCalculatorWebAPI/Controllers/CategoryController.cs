@@ -51,7 +51,7 @@ namespace FinancialCalculatorWebAPI.Controllers
         {
             var updateCategoryCommand = new UpdateCategoryCommand
             {
-                CategoryId = category.CategodyId,
+                CategoryId = category.CategoryId,
                 Name = category.Name,
             };
             var res = await _mediator.Send(updateCategoryCommand);

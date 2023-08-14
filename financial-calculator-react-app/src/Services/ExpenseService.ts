@@ -1,3 +1,4 @@
+import { Expense } from "./../Data/interface.ts";
 import axios from "axios";
 import { backend_url, username, storageKey } from "../Data/data.ts";
 import { getMonthFromDate } from "../Helper/HelperFunction.ts";
@@ -36,7 +37,6 @@ export function GetExpenseByUser() {
     });
 }
 
-//http://localhost:5162/api/expense/range/2023-07-01/2023-07-31
 export function GetExpenseByUserInDateRange(
   startDate: string,
   endDate: string
@@ -54,4 +54,19 @@ export function GetExpenseByUserInDateRange(
       console.log(err);
       return err;
     });
+}
+
+export function AddExpense(expense: Expense) {
+  return axios
+    .post(url, expense, {
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem(storageKey),
+      },
+    })
+    .then((res) => {
+      console.log(res);
+      console.log(res.data);
+      return res?.data;
+    })
+    .catch((err) => console.log(err));
 }

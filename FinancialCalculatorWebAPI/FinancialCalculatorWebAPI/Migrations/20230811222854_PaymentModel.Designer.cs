@@ -27,7 +27,7 @@ namespace FinancialCalculatorWebAPI.Migrations
 
             modelBuilder.Entity("FinancialCalculatorWebAPI.Model.Category", b =>
                 {
-                    b.Property<Guid>("CategodyId")
+                    b.Property<Guid>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -38,7 +38,7 @@ namespace FinancialCalculatorWebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("CategodyId");
+                    b.HasKey("CategoryId");
 
                     b.HasIndex("Name")
                         .IsUnique();

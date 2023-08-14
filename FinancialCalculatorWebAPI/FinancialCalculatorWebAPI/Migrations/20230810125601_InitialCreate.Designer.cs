@@ -56,7 +56,7 @@ namespace FinancialCalculatorWebAPI.Migrations
 
             modelBuilder.Entity("FinancialCalculatorWebAPI.Model.ExpenseCategory", b =>
                 {
-                    b.Property<Guid>("CategodyId")
+                    b.Property<Guid>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -67,7 +67,7 @@ namespace FinancialCalculatorWebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CategodyId");
+                    b.HasKey("CategoryId");
 
                     b.ToTable("ExpenseCategories");
                 });

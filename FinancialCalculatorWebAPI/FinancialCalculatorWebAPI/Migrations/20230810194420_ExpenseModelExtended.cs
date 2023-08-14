@@ -42,7 +42,7 @@ namespace FinancialCalculatorWebAPI.Migrations
                 table: "Expenses",
                 column: "CategoryId",
                 principalTable: "ExpenseCategories",
-                principalColumn: "CategodyId",
+                principalColumn: "CategoryId",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
@@ -88,7 +88,7 @@ namespace FinancialCalculatorWebAPI.Migrations
                 table: "Expenses",
                 column: "CategoryCategodyId",
                 principalTable: "ExpenseCategories",
-                principalColumn: "CategodyId",
+                principalColumn: "CategoryId",
                 onDelete: ReferentialAction.Cascade);
         }
     }

@@ -59,7 +59,7 @@ namespace FinancialCalculatorWebAPI.Migrations
                         name: "FK_Expenses_ExpenseCategories_CategoryCategodyId",
                         column: x => x.CategoryCategodyId,
                         principalTable: "ExpenseCategories",
-                        principalColumn: "CategodyId",
+                        principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
                 });
 

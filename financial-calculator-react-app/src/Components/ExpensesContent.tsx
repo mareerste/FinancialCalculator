@@ -151,6 +151,20 @@ const ExpensesContent = ({ title, message }) => {
     setGetExpensesByDate(true);
   };
 
+  const handleOnSubmitExpense = (newExpense: Expense) => {
+    var newList = [...expenses, newExpense];
+    setExpenses(newList);
+    setTotalValue(getTotalValue(newList));
+  };
+
+  const handleDeleteEntity = (expenseId: string) => {
+    const updatedExpenses = expenses.filter(
+      (expense) => expense.expenseId !== expenseId
+    );
+    setExpenses(updatedExpenses);
+    setTotalValue(getTotalValue(updatedExpenses));
+  };
+
   return (
     <>
       <br />
@@ -176,10 +190,14 @@ const ExpensesContent = ({ title, message }) => {
           onSelectFilter={handleFitler}
           onSwitchButton={(value) => setGetAllExpenses(value)}
           onDateFilter={(start, end) => handleFitlerDates(start, end)}
+          onSubmitExpense={(expense) => handleOnSubmitExpense(expense)}
         ></FilterDropDownButton>
         {expenses.length > 0 && (
           <>
-            <ExpensesTable expenses={expenses}></ExpensesTable>
+            <ExpensesTable
+              expenses={expenses}
+              handleDeleteEntity={handleDeleteEntity}
+            ></ExpensesTable>
             <TotalValueSection value={totalValue}></TotalValueSection>
           </>
         )}

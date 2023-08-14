@@ -5,7 +5,7 @@ namespace FinancialCalculatorWebAPI.Model
     public class Category
     {
         [Key]
-        public Guid CategodyId { get; set; }
+        public Guid CategoryId { get; set; }
         [Required]
         
         public string Name { get; set; }
