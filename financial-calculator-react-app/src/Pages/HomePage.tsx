@@ -4,7 +4,7 @@ import HomeContent from "../Components/HomeContent.tsx";
 const HomePage = () => {
   return (
     <HomeContent
-      title={"Monthly Financial Graph"}
+      title={"Monthly Financial Chart"}
       message={"Can you do it better?"}
     ></HomeContent>
   );

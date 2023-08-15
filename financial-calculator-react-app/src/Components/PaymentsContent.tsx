@@ -18,13 +18,10 @@ const PaymentsContent = ({ title, message, loggedUser, changeUser }) => {
   const [payments, setPayments] = useState<Payment>([]);
   const [date, setDate] = useState(new Date());
   const [totalValue, setTotalValue] = useState(0);
-  const [getAllPayments, setGetAllPayments] = useState(false);
 
   const changeDate = (newDate: Date) => {
     setDate(new Date(newDate));
   };
-
-  const sortOptions = ["aaa", "bbb"];
 
   useEffect(() => {
     GetAllPaymentsMonthly();
