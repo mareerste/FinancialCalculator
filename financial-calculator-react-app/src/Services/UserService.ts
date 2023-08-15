@@ -35,3 +35,12 @@ export function DeleteUser(userId: string) {
       return err;
     });
 }
+
+export function AddUser(userDto: User) {
+  return axios
+    .post(url, userDto)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => console.log(err));
+}

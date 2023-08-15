@@ -50,6 +50,7 @@ namespace FinancialCalculatorWebAPI.Controllers
                 Password = userDTO.Password,
                 Mail = userDTO.Mail,
                 BirthDate = userDTO.BirthDate,
+                CurrentBalance = userDTO.CurrentBalance,
             };
             var user = await _mediator.Send(addUserCommand);
             if (user != null)

@@ -8,6 +8,7 @@ import HomePage from "./Pages/HomePage.tsx";
 import CategoriesPage from "./Pages/CategoriesPage.tsx";
 import UsersPage from "./Pages/UsersPage.tsx";
 import PaymentsPage from "./Pages/PaymentsPage.tsx";
+import SignUpPage from "./Pages/SignUpPage.tsx";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           ></Route>
         </Route>
         <Route path="/login" element={<LoginPage></LoginPage>}></Route>
+        <Route path="/registration" element={<SignUpPage></SignUpPage>}></Route>
       </Routes>
     </BrowserRouter>
   );

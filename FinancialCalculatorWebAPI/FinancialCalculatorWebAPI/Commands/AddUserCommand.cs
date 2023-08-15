@@ -13,6 +13,7 @@ namespace FinancialCalculatorWebAPI.Commands
         public string Password { get; set; }
         public DateTime BirthDate { get; set; }
         public string Mail { get; set; }
+        public double CurrentBalance { get; set; }
     }
     public class AddUserCommandHandler : IRequestHandler<AddUserCommand, User>
     {
@@ -31,7 +32,7 @@ namespace FinancialCalculatorWebAPI.Commands
                 BirthDate = request.BirthDate,
                 Mail = request.Mail,
                 Role = ERole.User,
-                CurrentBalance = 0.0d,
+                CurrentBalance = request.CurrentBalance,
                 IsDeleted = false,
             };
             if(await IsValid(newUser, request.Password))

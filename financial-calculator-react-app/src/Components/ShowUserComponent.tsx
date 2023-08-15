@@ -16,32 +16,15 @@ const ShowUserComponent = ({ user, title, editable, onSubmitUpdate }) => {
     formState: { errors },
   } = useForm();
 
-  const today = new Date();
-  const minDate = new Date(
-    today.getFullYear() - 16,
-    today.getMonth(),
-    today.getDate()
-  )
-    .toISOString()
-    .split("T")[0];
+  const minDate = new Date();
+  minDate.setFullYear(minDate.getFullYear() - 16);
 
-  /*
-  export interface User {
-  userId: string;
-  username: string;
-  password: string;
-  role: ERole;
-  birthDate: string;
-  mail: string;
-  currentBalance: number;
-  isDeleted: boolean;
-}*/
   const onSubmit = () => {
     const userDto: User = {
       UserId: user.userId,
       Username: user.username,
       Mail: getValues("mail"),
-      CurrentBalance: Number(getValues("currentBalnce")),
+      CurrentBalance: Number(getValues("currentBalance")),
       BirthDate: getValues("birthDate"),
       Role: user.role,
       IsDeleted: user.isDeleted,
@@ -160,7 +143,10 @@ const ShowUserComponent = ({ user, title, editable, onSubmitUpdate }) => {
                 type="datetime-local"
                 readOnly={!editable}
                 className="form-control mb-4 border-primary-subtle"
-                {...register("birthDate", { required: true, min: minDate })}
+                {...register("birthDate", {
+                  required: true,
+                  max: minDate.toISOString().split(".")[0],
+                })}
               />
             </Form.Group>
             {user.username === sessionStorage.getItem(username) && (

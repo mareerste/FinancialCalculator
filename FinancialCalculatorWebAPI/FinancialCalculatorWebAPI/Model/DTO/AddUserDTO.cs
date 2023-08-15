@@ -9,5 +9,6 @@ namespace FinancialCalculatorWebAPI.Model.DTO
         public string Password { get; set; }
         public DateTime BirthDate { get; set; }
         public string Mail { get; set; }
+        public double CurrentBalance { get; set; } = 0.0d;
     }
 }

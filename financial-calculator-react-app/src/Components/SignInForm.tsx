@@ -103,11 +103,11 @@ const SignInForm = () => {
         </div>
         <button
           type="submit"
-          className="btn btn-outline-primary btn-lg"
+          className="btn btn-warning text-dark btn-lg"
           style={{ minWidth: "50%", marginLeft: "25%" }}
           onClick={handleSubmit(onSubmit)}
         >
-          Submit
+          Sign in
         </button>
       </form>
     </>
