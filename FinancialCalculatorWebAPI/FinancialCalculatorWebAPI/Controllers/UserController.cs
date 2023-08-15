@@ -24,6 +24,7 @@ namespace FinancialCalculatorWebAPI.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Moderator")]
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
