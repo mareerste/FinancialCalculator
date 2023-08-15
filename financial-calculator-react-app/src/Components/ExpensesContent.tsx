@@ -10,7 +10,8 @@ import {
 import ExpensesTable from "./ExpensesTable.tsx";
 import FilterDropDownButton from "./FilterTableComponent.tsx";
 import MonthHandler from "./MonthHandler.tsx";
-import TotalValueSection from "./TotalValueSection.tsx";
+import TableFooterSection from "./TableFooterSection.tsx";
+import ValueButton from "./ValueButton.tsx";
 
 const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
   const [expenses, setExpenses] = useState<Expense>([]);
@@ -238,12 +239,17 @@ const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
               handleDeleteEntity={handleDeleteEntity}
               handleUpdateEntity={handleUpdateEntity}
             ></ExpensesTable>
-            <TotalValueSection
-              text={"Total Value:"}
-              value={totalValue}
-              secondText={"Your Balance:"} //
-              secondValue={loggedUser?.currentBalance}
-            ></TotalValueSection>
+
+            <TableFooterSection>
+              <ValueButton
+                text={"Your Balance:"}
+                value={loggedUser?.currentBalance}
+              ></ValueButton>
+              <ValueButton
+                text={"Total Value:"}
+                value={totalValue}
+              ></ValueButton>
+            </TableFooterSection>
           </>
         )}
       </div>

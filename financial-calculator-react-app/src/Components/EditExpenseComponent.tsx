@@ -28,7 +28,6 @@ const EditExpenseComponent = ({ expense, onSubmitUpdate }) => {
   } = useForm();
 
   const onSubmit = () => {
-    console.log(expense);
     const expenseDto: Expense = {
       ExpenseId: expense.expenseId,
       DateTime:
@@ -81,7 +80,7 @@ const EditExpenseComponent = ({ expense, onSubmitUpdate }) => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Pick a date:</Modal.Title>
+          <Modal.Title>Edit Expense</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit(onSubmit)}>

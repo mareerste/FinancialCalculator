@@ -5,6 +5,7 @@ import LoginPage from "./Pages/LoginPage.tsx";
 import RequireAuth from "./Components/Context/RequireAuth.tsx";
 import ExpensesPage from "./Pages/ExpensesPage.tsx";
 import HomePage from "./Pages/HomePage.tsx";
+import CategoriesPage from "./Pages/CategoriesPage.tsx";
 
 function App() {
   return (
@@ -19,16 +20,11 @@ function App() {
           ></Route>
           <Route
             path="/expenses"
-            element={
-              <NavLayout
-                body={
-                  <ExpensesPage
-                    title={"Expense"}
-                    message={"Track your montly expenses"}
-                  ></ExpensesPage>
-                }
-              />
-            }
+            element={<NavLayout body={<ExpensesPage></ExpensesPage>} />}
+          ></Route>
+          <Route
+            path="/categories"
+            element={<NavLayout body={<CategoriesPage></CategoriesPage>} />}
           ></Route>
         </Route>
         <Route path="/login" element={<LoginPage></LoginPage>}></Route>
