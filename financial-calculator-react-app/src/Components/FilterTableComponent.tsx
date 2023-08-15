@@ -3,6 +3,7 @@ import AddExpenseComponent from "./AddExpenseComponent.tsx";
 import CheckBoxComponent from "./CheckBoxComponent.tsx";
 import DateTimeFilterComponent from "./DateTimeFilterComponent.tsx";
 import DropDownMenu from "./DropDownMenu.tsx";
+import { filterOptionsExpenses } from "../Data/data.ts";
 
 const FilterTableComponent = ({
   onSelectFilter,
@@ -17,7 +18,7 @@ const FilterTableComponent = ({
       ></DateTimeFilterComponent>
       <CheckBoxComponent
         messageOff={"Show all expenses"}
-        messageOn={"Show montly expenses"}
+        messageOn={"Show monthly expenses"}
         onClick={(clicked) => {
           onSwitchButton(clicked);
         }}
@@ -28,6 +29,7 @@ const FilterTableComponent = ({
       <DropDownMenu
         onSelectFilter={onSelectFilter}
         message={"Sort by"}
+        sortList={filterOptionsExpenses}
       ></DropDownMenu>
     </div>
   );

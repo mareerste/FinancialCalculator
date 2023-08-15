@@ -40,7 +40,7 @@ namespace FinancialCalculatorWebAPI.Commands
                 var res = await _expenseRepository.Update(expense);
                 if(res.Value != oldValue)
                 {
-                    //1000 => 400 (600) -> 300 (700)
+                    
                     var user = await _userRepository.GetById(expense.UserId);
                     user.CurrentBalance -= res.Value - oldValue;
                     await _userRepository.Update(user);

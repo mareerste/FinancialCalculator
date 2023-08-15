@@ -19,3 +19,19 @@ export function GetAllUsers() {
       return err;
     });
 }
+
+export function DeleteUser(userId: string) {
+  return axios
+    .delete(url + userId, {
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem(storageKey),
+      },
+    })
+    .then((res) => {
+      return res?.status;
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+}

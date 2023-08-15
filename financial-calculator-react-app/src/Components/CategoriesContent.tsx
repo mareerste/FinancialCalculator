@@ -35,6 +35,7 @@ const CategoriesContent = ({ title, message }) => {
             !updatedCategories[index].isDeleted;
 
           setCategories(updatedCategories);
+          setSearchCategories(updatedCategories);
         }
       }
     });

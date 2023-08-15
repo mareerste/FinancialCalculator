@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+import UsersContent from "../Components/UsersContent.tsx";
 
 const UsersPage = () => {
   return (
-    <div>UsersPage</div>
-  )
-}
+    <UsersContent
+      title={"Users"}
+      message={"All Registered Users"}
+    ></UsersContent>
+  );
+};
 
-export default UsersPage
+export default UsersPage;

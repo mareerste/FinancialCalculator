@@ -1,6 +1,5 @@
 import React from "react";
-import { filterMenu } from "../Data/data.ts";
-const DropDownMenu = ({ onSelectFilter, message }) => {
+const DropDownMenu = ({ onSelectFilter, message, sortList }) => {
   return (
     <div className="dropdown">
       <button
@@ -13,7 +12,7 @@ const DropDownMenu = ({ onSelectFilter, message }) => {
         {message}
       </button>
       <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        {filterMenu.map((filter) => {
+        {sortList.map((filter) => {
           return (
             <li key={filter}>
               <a

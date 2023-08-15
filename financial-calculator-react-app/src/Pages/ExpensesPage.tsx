@@ -5,7 +5,7 @@ const ExpensesPage = ({ loggedUser, changeUser }) => {
   return (
     <ExpensesContent
       title={"Expense"}
-      message={"Track your montly expenses"}
+      message={"Spend wisely"}
       loggedUser={loggedUser}
       changeUser={changeUser}
     ></ExpensesContent>

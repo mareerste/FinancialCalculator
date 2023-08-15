@@ -10,7 +10,7 @@ const ValueButton = ({ value, text }) => {
         {text}
       </small>
       <button className="btn btn-lg btn-warning custom-disabled">
-        {value.toFixed(2)}
+        {value?.toFixed(2)}
       </button>
     </>
   );

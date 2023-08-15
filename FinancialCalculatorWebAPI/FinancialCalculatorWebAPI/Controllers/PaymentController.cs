@@ -29,7 +29,12 @@ namespace FinancialCalculatorWebAPI.Controllers
         [HttpGet("{year:int}/{month:int}")]
         public async Task<ActionResult<List<Payment>>> GetAllByUser(int year, int month)
         {
-            return await _mediator.Send(new GetAllPaymentsInMonthQuery(year,month, "marko123"));
+            string jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var username = _mediator.Send(new GetMyUsernameQuery(jwtToken)).Result;
+
+            if (username == null)
+                return BadRequest();
+            return await _mediator.Send(new GetAllPaymentsInMonthQuery(year,month, username));
         }
 
         [HttpPost]
@@ -53,6 +58,23 @@ namespace FinancialCalculatorWebAPI.Controllers
         {
             await _mediator.Send(new DeletePaymentCommand(id));
             return Ok();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Payment>> UpdatePayment(UpdatePaymentDTO payment)
+        {
+            var updatePaymentCommand = new UpdatePaymentCommand
+            {
+                PaymentId = payment.PaymentId,
+                DateTime = payment.DateTime,
+                Description = payment.Description,
+                Value = payment.Value
+            };
+
+            var res = await _mediator.Send(updatePaymentCommand);
+            if (res != null)
+                return Ok(res);
+            return BadRequest();
         }
     }
 }

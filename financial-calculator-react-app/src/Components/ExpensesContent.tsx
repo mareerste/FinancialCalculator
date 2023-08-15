@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { filterMenu } from "../Data/data.ts";
+import { filterOptionsExpenses } from "../Data/data.ts";
 import { Expense } from "../Data/interface.ts";
 import { DeleteExpense } from "../Services/ExpenseService.ts";
 import {
@@ -73,29 +73,29 @@ const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
       .catch((err) => console.log(err));
   };
 
-  const handleFitler = (item: string) => {
+  const handleFilter = (item: string) => {
     switch (item) {
-      case filterMenu[0]: {
+      case filterOptionsExpenses[0]: {
         sortDateAsc();
         break;
       }
-      case filterMenu[1]: {
+      case filterOptionsExpenses[1]: {
         sortDateDesc();
         break;
       }
-      case filterMenu[2]: {
+      case filterOptionsExpenses[2]: {
         sortCategoryAsc();
         break;
       }
-      case filterMenu[3]: {
+      case filterOptionsExpenses[3]: {
         sortCategoryDesc();
         break;
       }
-      case filterMenu[4]: {
+      case filterOptionsExpenses[4]: {
         sortValueAsc();
         break;
       }
-      case filterMenu[5]: {
+      case filterOptionsExpenses[5]: {
         sortValueDesc();
         break;
       }
@@ -147,7 +147,7 @@ const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
     setExpenses([...expenses].sort((a, b) => b.value - a.value));
   };
 
-  const handleFitlerDates = (start, end) => {
+  const handleFilterDates = (start, end) => {
     setGetAllExpenses(false);
     setDates([start, end]);
     setGetExpensesByDate(true);
@@ -227,9 +227,9 @@ const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
           ></MonthHandler>
         )}
         <FilterDropDownButton
-          onSelectFilter={handleFitler}
+          onSelectFilter={handleFilter}
           onSwitchButton={(value) => setGetAllExpenses(value)}
-          onDateFilter={(start, end) => handleFitlerDates(start, end)}
+          onDateFilter={(start, end) => handleFilterDates(start, end)}
           onSubmitExpense={(expense) => handleOnSubmitExpense(expense)}
         ></FilterDropDownButton>
         {expenses.length > 0 && (

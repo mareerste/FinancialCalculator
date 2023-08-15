@@ -1,27 +1,11 @@
-import { Expense } from "./../Data/interface.ts";
+import { Payment } from "./../Data/interface.ts";
 import axios from "axios";
 import { backend_url, username, storageKey } from "../Data/data.ts";
 import { getMonthFromDate } from "../Helper/HelperFunction.ts";
 
-const url = backend_url + "expense/";
+const url = backend_url + "payment/";
 
-export function GetExpenseInMonth(date: Date) {
-  return axios
-    .get(url + date.getFullYear() + "/" + getMonthFromDate(date), {
-      headers: {
-        Authorization: "Bearer " + sessionStorage.getItem(storageKey),
-      },
-    })
-    .then((res) => {
-      return res?.data;
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
-}
-
-export function GetExpenseByUser() {
+export function GetAllPaymentsByUser() {
   return axios
     .get(url + sessionStorage.getItem(username), {
       headers: {
@@ -37,12 +21,9 @@ export function GetExpenseByUser() {
     });
 }
 
-export function GetExpenseByUserInDateRange(
-  startDate: string,
-  endDate: string
-) {
+export function GetPaymentsByUserInMonth(year: number, month: number) {
   return axios
-    .get(url + "range/" + startDate + "/" + endDate, {
+    .get(url + year + "/" + month, {
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem(storageKey),
       },
@@ -56,22 +37,24 @@ export function GetExpenseByUserInDateRange(
     });
 }
 
-export function AddExpense(expense: Expense) {
+export function AddPayment(payment: Payment) {
   return axios
-    .post(url, expense, {
+    .post(url, payment, {
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem(storageKey),
       },
     })
     .then((res) => {
+      console.log(res);
+      console.log(res.data);
       return res?.data;
     })
     .catch((err) => console.log(err));
 }
 
-export function DeleteExpense(expenseId: string) {
+export function DeletePayment(paymentId: string) {
   return axios
-    .delete(url + expenseId, {
+    .delete(url + paymentId, {
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem(storageKey),
       },
@@ -82,9 +65,9 @@ export function DeleteExpense(expenseId: string) {
     .catch((err) => console.log(err));
 }
 
-export function UpdateExpense(expenseDto: Expense) {
+export function UpdatePayment(paymentDto: Payment) {
   return axios
-    .put(url, expenseDto, {
+    .put(url, paymentDto, {
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem(storageKey),
       },

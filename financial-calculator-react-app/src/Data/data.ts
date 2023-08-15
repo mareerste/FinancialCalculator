@@ -6,11 +6,18 @@ export const storageKey = "JWT";
 export const username = "username";
 export const role = "role";
 
-export const filterMenu = [
+export const filterOptionsExpenses = [
   "Date asc",
   "Date desc",
   "Category asc",
   "Category desc",
+  "Value asc",
+  "Value desc",
+];
+
+export const filterOptionsPayments = [
+  "Date asc",
+  "Date desc",
   "Value asc",
   "Value desc",
 ];
@@ -45,3 +52,5 @@ export enum UserRole {
   User = "User",
   Moderator = "Moderator",
 }
+
+export const userRoles: UserRole[] = [UserRole.User, UserRole.Moderator];
