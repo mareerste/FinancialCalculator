@@ -45,7 +45,7 @@ export function AddPayment(payment: Payment) {
       },
     })
     .then((res) => {
-      return res?.data;
+      return res;
     })
     .catch((err) => console.log(err));
 }

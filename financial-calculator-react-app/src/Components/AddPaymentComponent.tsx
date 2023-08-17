@@ -9,6 +9,7 @@ const AddPaymentComponent = ({ onSubmitPayment }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     register,
@@ -18,6 +19,7 @@ const AddPaymentComponent = ({ onSubmitPayment }) => {
   } = useForm();
 
   const onSubmit = () => {
+    setErrorMessage("");
     const paymentDto: Payment = {
       DateTime:
         getValues("dateTime") === ""
@@ -30,8 +32,12 @@ const AddPaymentComponent = ({ onSubmitPayment }) => {
     if (isPaymentIsValid(paymentDto)) {
       AddPayment(paymentDto)
         .then((res) => {
-          onSubmitPayment(res);
-          handleClose();
+          if (res?.status === 201) {
+            onSubmitPayment(res);
+            handleClose();
+          } else {
+            setErrorMessage("Something went wrong. Please try again.");
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -69,6 +75,20 @@ const AddPaymentComponent = ({ onSubmitPayment }) => {
         <Modal.Body>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group controlId="dateTime">
+              {errorMessage && (
+                <div
+                  className="alert alert-danger alert-dismissible fade show"
+                  role="alert"
+                >
+                  <p className="fs-5">{errorMessage}</p>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  ></button>
+                </div>
+              )}
               {errors.dateTime && (
                 <div
                   className="alert alert-danger alert-dismissible fade show"

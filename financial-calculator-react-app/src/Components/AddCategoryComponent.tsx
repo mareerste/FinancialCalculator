@@ -8,6 +8,7 @@ const AddCategoryComponent = ({ onSubmitCategory }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     register,
@@ -17,14 +18,19 @@ const AddCategoryComponent = ({ onSubmitCategory }) => {
   } = useForm();
 
   const onSubmit = () => {
+    setErrorMessage("");
     const categoryDto: Category = {
       Name: getValues("name"),
     };
     if (categoryDto.Name !== "") {
       AddCategory(categoryDto)
         .then((res) => {
-          onSubmitCategory(res);
-          handleClose();
+          if (res?.status === 201) {
+            onSubmitCategory(res.data);
+            handleClose();
+          } else {
+            setErrorMessage("Try with different name");
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -55,6 +61,20 @@ const AddCategoryComponent = ({ onSubmitCategory }) => {
         <Modal.Body>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group controlId="name">
+              {errorMessage && (
+                <div
+                  className="alert alert-danger alert-dismissible fade show"
+                  role="alert"
+                >
+                  <p className="fs-5">{errorMessage}</p>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  ></button>
+                </div>
+              )}
               {errors.name && (
                 <div
                   className="alert alert-danger alert-dismissible fade show"

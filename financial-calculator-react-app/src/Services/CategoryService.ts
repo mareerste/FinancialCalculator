@@ -60,7 +60,7 @@ export function AddCategory(category: Category) {
       },
     })
     .then((res) => {
-      return res.data;
+      return res;
     })
     .catch((err) => console.log(err));
 }

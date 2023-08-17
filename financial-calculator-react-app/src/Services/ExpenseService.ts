@@ -63,7 +63,7 @@ export function AddExpense(expense: Expense) {
       },
     })
     .then((res) => {
-      return res?.data;
+      return res;
     })
     .catch((err) => console.log(err));
 }

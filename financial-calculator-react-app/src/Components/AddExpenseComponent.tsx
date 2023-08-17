@@ -11,6 +11,7 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     GetUndeletedCategories()
@@ -28,6 +29,7 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
   } = useForm();
 
   const onSubmit = () => {
+    setErrorMessage("");
     const expenseDto: Expense = {
       DateTime:
         getValues("dateTime") === ""
@@ -41,8 +43,12 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
     if (isExpenseValid(expenseDto)) {
       AddExpense(expenseDto)
         .then((res) => {
-          onSubmitExpense(res);
-          handleClose();
+          if (res?.status === 200) {
+            onSubmitExpense(res.data);
+            handleClose();
+          } else {
+            setErrorMessage("Something went wrong. Please try again.");
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -88,6 +94,20 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
               />
             </Form.Group>
             <Form.Group controlId="description">
+              {errorMessage && (
+                <div
+                  className="alert alert-danger alert-dismissible fade show"
+                  role="alert"
+                >
+                  <p className="fs-5">{errorMessage}</p>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  ></button>
+                </div>
+              )}
               {errors.description && (
                 <div
                   className="alert alert-danger alert-dismissible fade show"
