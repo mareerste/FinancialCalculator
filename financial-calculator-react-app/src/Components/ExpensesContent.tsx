@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { filterOptionsExpenses } from "../Data/data.ts";
 import { Expense } from "../Data/interface.ts";
+import { getMonthFromStringDate } from "../Helper/HelperFunction.ts";
 import { DeleteExpense } from "../Services/ExpenseService.ts";
 import {
   GetExpenseInMonth,
@@ -60,7 +61,6 @@ const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
       })
       .catch((err) => {
         console.log(err);
-        setGetExpensesByDate(false);
       });
   };
 
@@ -154,9 +154,11 @@ const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
   };
 
   const handleOnSubmitExpense = (newExpense: Expense) => {
-    var newList = [...expenses, newExpense];
-    setExpenses(newList);
-    setTotalValue(getTotalValue(newList));
+    if (date.getMonth() === getMonthFromStringDate(newExpense.dateTime)) {
+      var newList = [...expenses, newExpense];
+      setExpenses(newList);
+      setTotalValue(getTotalValue(newList));
+    }
 
     changeUser({
       ...loggedUser,
@@ -183,12 +185,13 @@ const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
   };
 
   const handleUpdateEntity = (updatedExpense: Expense) => {
+    console.log(updatedExpense);
     const index = expenses.findIndex(
       (expense) => expense.expenseId === updatedExpense.expenseId
     );
 
     if (index !== -1) {
-      const updatedExpenses = [...expenses];
+      let updatedExpenses = [...expenses];
 
       changeUser({
         ...loggedUser,
@@ -198,7 +201,13 @@ const ExpensesContent = ({ title, message, loggedUser, changeUser }) => {
           updatedExpense.value,
       });
 
-      updatedExpenses[index] = updatedExpense;
+      if (date.getMonth() === getMonthFromStringDate(updatedExpense.dateTime)) {
+        updatedExpenses[index] = updatedExpense;
+      } else {
+        updatedExpenses = expenses.filter(
+          (expense) => expense.expenseId !== updatedExpense.expenseId
+        );
+      }
 
       setExpenses(updatedExpenses);
       setTotalValue(getTotalValue(updatedExpenses));

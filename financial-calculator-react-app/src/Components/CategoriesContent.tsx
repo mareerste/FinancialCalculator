@@ -44,6 +44,7 @@ const CategoriesContent = ({ title, message }) => {
   const handleOnSubmitCategory = (newCategory: Category) => {
     var newList = [...categories, newCategory];
     setCategories(newList);
+    setSearchCategories(newList);
   };
 
   const handleUpdateEntity = (updateCategory: Category) => {

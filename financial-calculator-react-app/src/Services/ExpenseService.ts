@@ -16,7 +16,6 @@ export function GetExpenseInMonth(date: Date) {
       return res?.data;
     })
     .catch((err) => {
-      console.log(err);
       return err;
     });
 }

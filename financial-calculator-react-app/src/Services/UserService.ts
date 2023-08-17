@@ -44,3 +44,16 @@ export function AddUser(userDto: User) {
     })
     .catch((err) => console.log(err));
 }
+
+export function UpdateUser(userDto: User) {
+  return axios
+    .put(url, userDto, {
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem(storageKey),
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+}

@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Payment } from "../Data/interface.ts";
 import {
   GetPaymentsByUserInMonth,
-  GetAllPaymentsByUser,
   DeletePayment,
-  UpdatePayment,
-  AddPayment,
 } from "../Services/PaymentService.ts";
 import MonthHandler from "./MonthHandler.tsx";
 import PaymentsTable from "./PaymentsTable.tsx";
@@ -13,6 +10,8 @@ import TableFooterSection from "./TableFooterSection.tsx";
 import ValueButton from "./ValueButton.tsx";
 import DropDownMenu from "./DropDownMenu.tsx";
 import { filterOptionsPayments } from "../Data/data.ts";
+import AddPaymentComponent from "./AddPaymentComponent.tsx";
+import { getMonthFromStringDate } from "../Helper/HelperFunction.ts";
 
 const PaymentsContent = ({ title, message, loggedUser, changeUser }) => {
   const [payments, setPayments] = useState<Payment>([]);
@@ -87,7 +86,6 @@ const PaymentsContent = ({ title, message, loggedUser, changeUser }) => {
   const GetAllPaymentsMonthly = () => {
     GetPaymentsByUserInMonth(date.getFullYear(), date.getMonth() + 1).then(
       (res) => {
-        console.log(res);
         setPayments(res);
         setTotalValue(getTotalValue(res));
       }
@@ -95,10 +93,11 @@ const PaymentsContent = ({ title, message, loggedUser, changeUser }) => {
   };
 
   const handleOnSubmitPayment = (newPayment: Payment) => {
-    var newList = [...payments, newPayment];
-    setPayments(newList);
-    setTotalValue(getTotalValue(newList));
-
+    if (date.getMonth() === getMonthFromStringDate(newPayment.dateTime)) {
+      var newList = [...payments, newPayment];
+      setPayments(newList);
+      setTotalValue(getTotalValue(newList));
+    }
     changeUser({
       ...loggedUser,
       currentBalance: loggedUser.currentBalance + newPayment.value,
@@ -163,13 +162,19 @@ const PaymentsContent = ({ title, message, loggedUser, changeUser }) => {
         <hr />
 
         <MonthHandler currentDate={date} changeDate={changeDate}></MonthHandler>
+
+        <TableFooterSection>
+          <DropDownMenu
+            onSelectFilter={handleFilter}
+            sortList={filterOptionsPayments}
+            message={"Sort by"}
+          ></DropDownMenu>
+          <AddPaymentComponent
+            onSubmitPayment={(payment) => handleOnSubmitPayment(payment)}
+          ></AddPaymentComponent>
+        </TableFooterSection>
         {payments?.length > 0 && (
           <>
-            <DropDownMenu
-              onSelectFilter={handleFilter}
-              sortList={filterOptionsPayments}
-              message={"Sort by"}
-            ></DropDownMenu>
             <hr></hr>
             <PaymentsTable
               payments={payments}

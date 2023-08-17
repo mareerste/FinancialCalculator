@@ -30,7 +30,6 @@ const LoginPage = () => {
           className="btn btn-outline-warning text-dark btn-lg mt-3"
           type="button"
           onClick={onClickSignUp}
-          // style={{ minWidth: "50%", marginLeft: "25%" }}
         >
           Sign up
         </button>

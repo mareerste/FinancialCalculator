@@ -44,5 +44,12 @@ namespace FinancialCalculatorWebAPI.Repository
                 .OrderBy(e => e.DateTime)
                 .ToListAsync();
         }
+
+        public async Task<Expense> GetByIdWithCategory(Guid expenseId)
+        {
+            return await _context.Expenses
+                .Include(e => e.Category)
+                .FirstOrDefaultAsync(e => e.ExpenseId == expenseId);
+        }
     }
 }

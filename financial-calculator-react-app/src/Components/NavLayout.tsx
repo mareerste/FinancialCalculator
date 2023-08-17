@@ -9,6 +9,7 @@ import {
 } from "../Data/data.ts";
 import { useNavigate } from "react-router-dom";
 import { WhoAmI } from "../Services/AuthService.ts";
+import ShowProfileComponent from "./ShowProfileComponent.tsx";
 
 const NavLayout = ({ body }) => {
   const logOut = () => {
@@ -86,13 +87,10 @@ const NavLayout = ({ body }) => {
             }}
           >
             <li className="nav-item h3" style={{ display: "flex" }}>
-              <a
-                className="nav-link"
-                role="button"
-                onClick={() => console.log("not implemented")}
-              >
-                {loggedUser?.username}
-              </a>
+              <ShowProfileComponent
+                user={loggedUser}
+                changeUser={changeUser}
+              ></ShowProfileComponent>
             </li>
             <li className="nav-item h3" style={{ display: "flex" }}>
               <a className="nav-link" role="button" onClick={logOut}>

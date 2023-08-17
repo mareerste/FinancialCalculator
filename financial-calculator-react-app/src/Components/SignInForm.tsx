@@ -6,6 +6,7 @@ import { postCredentials } from "../Services/AuthService.ts";
 
 const SignInForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -18,6 +19,7 @@ const SignInForm = () => {
   const from = location.state?.from?.pathname || "/";
 
   const onSubmit = () => {
+    setLoading(true);
     setErrorMessage("");
     const dto = {
       Username: getValues("username"),
@@ -29,9 +31,11 @@ const SignInForm = () => {
         sessionStorage.setItem(storageKey, res.data.token);
         sessionStorage.setItem(role, res.data.role);
         sessionStorage.setItem(username, res.data.username);
+        setLoading(false);
         navigate(from, { replace: true });
       })
       .catch((err) => {
+        setLoading(false);
         setErrorMessage("Wrong credentials.");
       });
   };
@@ -101,6 +105,13 @@ const SignInForm = () => {
             {...register("password", { required: true })}
           />
         </div>
+        {loading && (
+          <div className="d-flex justify-content-center container mb-3">
+            <div className="spinner-border text-warning" role="status">
+              <span className="sr-only"></span>
+            </div>
+          </div>
+        )}
         <button
           type="submit"
           className="btn btn-warning text-dark btn-lg"

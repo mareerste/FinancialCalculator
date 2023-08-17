@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { User } from "../Data/interface.ts";
 import { AddUser } from "../Services/UserService.ts";
 
-const SignUpPage = () => {
+const SignUpPage = ({ user }: User) => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -28,7 +28,6 @@ const SignUpPage = () => {
       CurrentBalance: Number(getValues("currentBalance")),
       BirthDate: getValues("birthDate"),
     };
-    console.log(userDto);
     AddUser(userDto)
       .then((res) => {
         if (res?.status === 201) {

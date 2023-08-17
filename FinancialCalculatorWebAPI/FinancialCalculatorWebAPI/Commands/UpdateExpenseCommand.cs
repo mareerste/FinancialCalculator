@@ -27,17 +27,19 @@ namespace FinancialCalculatorWebAPI.Commands
 
         public async Task<Expense> Handle(UpdateExpenseCommand request, CancellationToken cancellationToken)
         {
-            var expense = await _expenseRepository.GetById(request.ExpenseId);
+            var expense = await _expenseRepository.GetByIdWithCategory(request.ExpenseId);
             if(expense is not null)
             {
                 if (request.CategoryId != expense.CategoryId)
                     expense.Category = await _expenseCategoryRepository.GetById(request.CategoryId);
+                
                 var oldValue = expense.Value;
                 expense.DateTime = request.DateTime;
                 expense.Description = request.Description;
                 expense.Value = request.Value;
 
                 var res = await _expenseRepository.Update(expense);
+                
                 if(res.Value != oldValue)
                 {
                     
