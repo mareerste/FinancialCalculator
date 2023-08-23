@@ -26,7 +26,7 @@ const AddCategoryComponent = ({ onSubmitCategory }) => {
       AddCategory(categoryDto)
         .then((res) => {
           if (res?.status === 201) {
-            onSubmitCategory(res.data);
+            onSubmitCategory(res?.data);
             handleClose();
           } else {
             setErrorMessage("Try with different name");

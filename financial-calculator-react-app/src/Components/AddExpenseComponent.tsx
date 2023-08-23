@@ -44,7 +44,7 @@ const AddExpenseComponent = ({ onSubmitExpense }) => {
       AddExpense(expenseDto)
         .then((res) => {
           if (res?.status === 200) {
-            onSubmitExpense(res.data);
+            onSubmitExpense(res?.data);
             handleClose();
           } else {
             setErrorMessage("Something went wrong. Please try again.");

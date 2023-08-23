@@ -33,7 +33,7 @@ const AddPaymentComponent = ({ onSubmitPayment }) => {
       AddPayment(paymentDto)
         .then((res) => {
           if (res?.status === 201) {
-            onSubmitPayment(res);
+            onSubmitPayment(res?.data);
             handleClose();
           } else {
             setErrorMessage("Something went wrong. Please try again.");
